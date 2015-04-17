@@ -13,10 +13,12 @@ import java.util.regex.Pattern;
  * @author siva
  */
 public class search {
-       /* public search(String str)
+    public static void main(String[] args){
+        search srch=new search();
+        srch.assignsearch("adit7 ravi 65 tst");
+    }
+        public void assignsearch(String str)
         {
-                    Pattern p1=Pattern.compile("#([^,]*)");
-Pattern p2=Pattern.compile("");
 
 //DATE PATTERNS
 Pattern p3=Pattern.compile("(^[0-9]{2})(/|-)([0-9]{2})(/|-)([0-9]{4})$");
@@ -26,8 +28,8 @@ Pattern p6=Pattern.compile("(^[0-9]{2})(\\s|,|-|)([a-z]{3})$");
 Pattern p7=Pattern.compile("(^[a-zA-Z]*)(\\s|,|-|)([0-9]{2})$");
 
 // [string](" " or ,)[number] [string]
-Pattern p9=Pattern.compile("(^[a-zA-Z]*)(\\s|,)([0-9]*)(\\s|,)(.*)"); // [string](" " or ,)[number] [string]
-Pattern p10=Pattern.compile("(^[a-zA-Z]*)(\\s|,|-)([a-zA-Z]*)(\\s|,)([0-9]*)(\\s|,)(.*)");
+Pattern p9=Pattern.compile("(^[a-zA-Z\\d.]*)(\\s|,)([0-9]*)(\\s|,)(.*)"); // [string](" " or ,)[number] [string]
+Pattern p10=Pattern.compile("(^[a-zA-Z\\d.]*)(\\s|,|-)([a-zA-Z\\d.]*)(\\s|,)([0-9]*)(\\s|,)(.*)");
 
 Pattern p11=Pattern.compile("(^[0-9]*)(\\s|,)([a-zA-Z]*)(.*)");
 //Matchers
@@ -115,8 +117,6 @@ if (m11.find()) {
   System.out.println(m11.group(2));
   System.out.println(m11.group(3));
   System.out.println(m11.group(4));
-
-  
 }
 
 
@@ -124,5 +124,5 @@ if (m11.find()) {
                              
         }
         
-*/
+
 }
