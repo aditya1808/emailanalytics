@@ -47,11 +47,11 @@ public class search {
      
     public static void main(String[] args){
         search srch=new search();
-        srch.assignsearch("29aug1990"); //not working for 29102013
+        srch.assignsearch("asd qwe 21 tst"); //not working for "asd qwe 21"
     }
     
     String srchstr1;
-    String srchstr2,srchstr3;
+    String srchstr2,srchstr3,srchstr4;
     Date d;
     String result;
         public void assignsearch(String str)
@@ -65,7 +65,7 @@ public class search {
 Pattern p3=Pattern.compile("^([0-9]{1,2})(/|-|\\s|)([0-9]{1,2}|[a-zA-Z]{3})(/|-|\\s|)([0-9]{4})*$");
 Pattern p6=Pattern.compile("^([0-9]{2}|[a-zA-z]*)(\\s|,|-|)([a-zA-Z]*|[0-9]{2})$");
 Pattern p9=Pattern.compile("(^[a-zA-Z\\d.]*)(\\s|,)([0-9]*)(\\s|,)(.*)"); // [string](" " or ,)[number] [string]
-Pattern p10=Pattern.compile("(^[a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,|-)([a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,)([0-9]*)(\\s|,)(.*)");
+Pattern p10=Pattern.compile("^([a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,|-)([a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,)([0-9]*)(\\s|,)(.*)$");
 Pattern p11=Pattern.compile("^([0-9]{4}|[a-zA-z]*)(\\s|,|-|)([a-zA-Z]*|[0-9]{4})$");
 
 
@@ -208,14 +208,25 @@ result="m11";
 
 if (m9.find()) {
     System.out.println("String 9");
-  /*String ss=m9.group(1);
+  String ss=m9.group(1);
   System.out.println(ss);// The matched substring
   System.out.println(m9.group(2));
   System.out.println(m9.group(3));
   System.out.println(m9.group(4));
   System.out.println(m9.group(5));
-  */
+  
 srchstr2=m9.group(1);
+srchstr3=m9.group(5);
+
+if(isValidDate(m9.group(5),"dd")==true)
+ {
+     formatstr(m9.group(5),"dd");
+ }
+if(isValidDate(m9.group(5),"yyyy")==true)
+ {
+     formatstr(m9.group(5),"yyyy");
+ }
+
 result="m9";
 }
 
@@ -223,7 +234,7 @@ result="m9";
 
 if (m10.find()) {
     System.out.println("String 10");
-    /*String ss=m10.group(1);
+  String ss=m10.group(1);
   System.out.println(ss);// The matched substring
   System.out.println(m10.group(2));
   System.out.println(m10.group(3));
@@ -231,10 +242,20 @@ if (m10.find()) {
   System.out.println(m10.group(5));
   System.out.println(m10.group(6));
   System.out.println(m10.group(7));
-            */
+  
     
 srchstr2=m10.group(1);
 srchstr3=m10.group(3);
+srchstr4=m10.group(7);
+if(isValidDate(m10.group(5),"dd")==true)
+ {
+     formatstr(m10.group(5),"dd");
+ }
+if(isValidDate(m10.group(5),"yyyy")==true)
+ {
+     formatstr(m10.group(5),"yyyy");
+ }
+//group 5 could be date
 result="m10";
 }
                              

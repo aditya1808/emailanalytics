@@ -16,7 +16,7 @@ import java.util.Date;
  * @author siva
  */
 public class user {
-    public static String str1,str2;
+    public static String str1,str2,str3,str4;
     Date dt;
     public static String usrname;
     public static void main(String[] args) throws UnknownHostException
@@ -52,12 +52,17 @@ public class user {
         {
             str1=srch.srchstr2;
             str2=srch.srchstr3;
+           
+            //Use these two strings for searching in mongodb
         }
         
         if(srch.result=="m10")
         {
+            //use these two strings for searching in mongodb
          str1=srch.srchstr2;
          str2=srch.srchstr3;
+         str3=srch.srchstr4;
+         
          System.out.println(str1+str2);
         }
         if(srch.result=="m11")
