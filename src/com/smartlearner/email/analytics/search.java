@@ -5,102 +5,225 @@
  */
 package com.smartlearner.email.analytics;
 
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.text.ParseException;
 /**
  *
  * @author siva
  */
 public class search {
+    
+     public boolean isValidDate(String inDate,String df) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(df);
+    dateFormat.setLenient(false);
+    try {
+      dateFormat.parse(inDate.trim());
+    } catch (ParseException pe) {
+      return false;
+    }
+    return true;
+  }
+     
+     
+     public void formatstr(String str1,String dfrmt)
+     {
+         
+          SimpleDateFormat formatter = new SimpleDateFormat(dfrmt);
+	try {
+ 		d = formatter.parse(str1);
+		//System.out.println(d);
+		
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+ 
+     }
+     
+     
     public static void main(String[] args){
         search srch=new search();
-        srch.assignsearch("adit7 ravi 65 tst");
+        srch.assignsearch("29aug1990"); //not working for 29102013
     }
+    
+    String srchstr1;
+    String srchstr2,srchstr3;
+    Date d;
+    String result;
         public void assignsearch(String str)
         {
-
-//DATE PATTERNS
-Pattern p3=Pattern.compile("(^[0-9]{2})(/|-)([0-9]{2})(/|-)([0-9]{4})$");
-Pattern p4=Pattern.compile("(^[0-9]{2})(/|-|\\s)([a-zA-Z]{3})(/|-|\\s)([0-9]{4})$");
-
-Pattern p6=Pattern.compile("(^[0-9]{2})(\\s|,|-|)([a-z]{3})$");
-Pattern p7=Pattern.compile("(^[a-zA-Z]*)(\\s|,|-|)([0-9]{2})$");
-
-// [string](" " or ,)[number] [string]
+            srchstr1=null;
+            srchstr2=null;
+            srchstr3=null;
+            d=null;
+            
+//PATTERNS
+Pattern p3=Pattern.compile("^([0-9]{1,2})(/|-|\\s|)([0-9]{1,2}|[a-zA-Z]{3})(/|-|\\s|)([0-9]{4})*$");
+Pattern p6=Pattern.compile("^([0-9]{2}|[a-zA-z]*)(\\s|,|-|)([a-zA-Z]*|[0-9]{2})$");
 Pattern p9=Pattern.compile("(^[a-zA-Z\\d.]*)(\\s|,)([0-9]*)(\\s|,)(.*)"); // [string](" " or ,)[number] [string]
-Pattern p10=Pattern.compile("(^[a-zA-Z\\d.]*)(\\s|,|-)([a-zA-Z\\d.]*)(\\s|,)([0-9]*)(\\s|,)(.*)");
+Pattern p10=Pattern.compile("(^[a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,|-)([a-zA-Z\\d.]*|[\\da-zA-z.]*)(\\s|,)([0-9]*)(\\s|,)(.*)");
+Pattern p11=Pattern.compile("^([0-9]{4}|[a-zA-z]*)(\\s|,|-|)([a-zA-Z]*|[0-9]{4})$");
 
-Pattern p11=Pattern.compile("(^[0-9]*)(\\s|,)([a-zA-Z]*)(.*)");
+
 //Matchers
 Matcher m3=p3.matcher(str);
-
-Matcher m4=p4.matcher(str);
 Matcher m6=p6.matcher(str);
-Matcher m7=p7.matcher(str);
-Matcher m9 = p9.matcher(str);
-Matcher m10 = p10.matcher(str);
+Matcher m9=p9.matcher(str);
+Matcher m10=p10.matcher(str);
 Matcher m11=p11.matcher(str);
 
 
+
 if (m3.find()) {
-    System.out.println("String 3");
-  String ss=m3.group(1);
-  System.out.println(ss);// The matched substring
- // System.out.println(m3.group(2));
-  System.out.println(m3.group(3));
-  //System.out.println(m3.group(4));
-  System.out.println(m3.group(5));
-  
+ //  System.out.println("m3.group(3)");
+// System.out.println(m3.group(2));
+ // System.out.println(m3.group(3));
+ //System.out.println(m3.group(4));
+  //System.out.println(m3.group(5));
+ if(isValidDate(str,"dd/MMM/yyyy")==true)
+ {
+ formatstr(str,"dd/MMM/yyyy");
+ }
+ if(isValidDate(str,"dd/MM/yyyy")==true)
+ {
+     formatstr(str,"dd/MM/yyyy");
+ }   
+if(isValidDate(str,"dd-MM-yyyy")==true)
+ {
+     formatstr(str,"dd-MM-yyyy");
+ }   
+if(isValidDate(str,"dd-MMM-yyyy")==true)
+ {
+     formatstr(str,"dd-MMM-yyyy");
+ }   
+if(isValidDate(str,"ddMMMyyyy")==true)
+ {
+     formatstr(str,"ddMMMyyyy");
+ }
+if(isValidDate(str,"ddMMyyyy")==true)
+ {
+     formatstr(str,"ddMMyyyy");
+ }
+if(isValidDate(str,"dd MMM yyyy")==true)
+ {
+     formatstr(str,"dd MMM yyyy");
+ }
+if(isValidDate(str,"dd MM yyyy")==true)
+ {
+     formatstr(str,"dd MM yyyy");
+ }
+ //System.out.println(new SimpleDateFormat("MMM-dd-yyyy").format(d));
+         
+result="m3";
 }
 
-if (m4.find()) {
-    System.out.println("String 4");
-  String ss=m4.group(1);
-  System.out.println(ss);// The matched substring
- // System.out.println(m4.group(2));
-  System.out.println(m4.group(3));
-  //System.out.println(m4.group(4));
-  System.out.println(m4.group(5));
-  
-}
 
 
 if (m6.find()) {
-    System.out.println("String 6");
-  String ss=m6.group(1);
-  System.out.println(ss);// The matched substring
- System.out.println(m6.group(2));
-  System.out.println(m6.group(3));
- // System.out.println(m6.group(4));
+  //System.out.println(m6.group(1););// The matched substring
+//  System.out.println(m6.group(2));
+ //System.out.println(m6.group(3));
   //System.out.println(m6.group(5));
-  
+System.out.println("string 6"); 
+
+ if(isValidDate(str,"dd/MMM")==true)
+ {
+ formatstr(str,"dd/MMM");
+ }
+ if(isValidDate(str,"dd/MM")==true)
+ {
+     formatstr(str,"dd/MM");
+ }   
+if(isValidDate(str,"dd-MM")==true)
+ {
+     formatstr(str,"dd-MM");
+ }   
+if(isValidDate(str,"dd-MMM")==true)
+ {
+     formatstr(str,"dd-MMM");
+ }   
+if(isValidDate(str,"ddMMM")==true)
+ {
+     formatstr(str,"ddMMM");
+ }
+if(isValidDate(str,"ddMM")==true)
+ {
+     formatstr(str,"ddMM");
+ }
+if(isValidDate(str,"dd MMM")==true)
+ {
+     formatstr(str,"dd MMM");
+ }
+if(isValidDate(str,"dd MM")==true)
+ {
+     formatstr(str,"dd MM");
+ }   
+result="m6";
 }
-if (m7.find()) {
-    System.out.println("String 7");
-  String ss=m7.group(1);
-  System.out.println(ss);// The matched substring
- System.out.println(m7.group(2));
-  System.out.println(m7.group(3));
-  //System.out.println(m7.group(4));
-  //System.out.println(m7.group(5));
-  
+
+if (m11.find()) {
+    System.out.println("string 11");
+if(isValidDate(str,"yyyy/MMM")==true)
+ {
+ formatstr(str,"yyyy/MMM");
+ }
+ if(isValidDate(str,"yyyy/MM")==true)
+ {
+     formatstr(str,"yyyy/MM");
+ }   
+if(isValidDate(str,"yyyy-MM")==true)
+ {
+     formatstr(str,"yyyy-MM");
+ }   
+if(isValidDate(str,"yyyy-MMM")==true)
+ {
+     formatstr(str,"yyyy-MMM");
+ }   
+if(isValidDate(str,"yyyyMMM")==true)
+ {
+     formatstr(str,"yyyyMMM");
+ }
+if(isValidDate(str,"yyyyMM")==true)
+ {
+     formatstr(str,"yyyyMM");
+ }
+if(isValidDate(str,"yyyy MMM")==true)
+ {
+     formatstr(str,"yyyy MMM");
+ }
+if(isValidDate(str,"yyyy MM")==true)
+ {
+     formatstr(str,"yyyy MM");
+ }   
+result="m11";
+    
 }
+
+
+
 
 if (m9.find()) {
     System.out.println("String 9");
-  String ss=m9.group(1);
+  /*String ss=m9.group(1);
   System.out.println(ss);// The matched substring
   System.out.println(m9.group(2));
   System.out.println(m9.group(3));
   System.out.println(m9.group(4));
   System.out.println(m9.group(5));
-  
+  */
+srchstr2=m9.group(1);
+result="m9";
 }
+
+
 
 if (m10.find()) {
     System.out.println("String 10");
-  String ss=m10.group(1);
+    /*String ss=m10.group(1);
   System.out.println(ss);// The matched substring
   System.out.println(m10.group(2));
   System.out.println(m10.group(3));
@@ -108,19 +231,12 @@ if (m10.find()) {
   System.out.println(m10.group(5));
   System.out.println(m10.group(6));
   System.out.println(m10.group(7));
+            */
+    
+srchstr2=m10.group(1);
+srchstr3=m10.group(3);
+result="m10";
 }
-
-if (m11.find()) {
-    System.out.println("String 11");
-  String ss=m11.group(1);
-  System.out.println(ss);// The matched substring
-  System.out.println(m11.group(2));
-  System.out.println(m11.group(3));
-  System.out.println(m11.group(4));
-}
-
-
-
                              
         }
         
