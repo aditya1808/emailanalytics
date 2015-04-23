@@ -49,11 +49,12 @@ public class EmailAnalytics {
              Mongo mongoClient = new Mongo( "localhost" , 27017 );
              
          
-         //DB db = mongoClient.getDB( "email" );
-             DB db=mongoClient.getDB("email3");
+         
+             DB db=mongoClient.getDB("temp");
          System.out.println("Conn succesful");
          
-         DBCollection coll3 = db.getCollection("email3");
+         //DBCollection coll3 = db.getCollection("temp_col"); has date stored in date format,not as string
+         DBCollection coll3 = db.getCollection("temp_col_test");
          System.out.println("Collection created successfully");
 
             FileOutputStream out=new FileOutputStream("EmailText.txt");
@@ -82,9 +83,9 @@ public class EmailAnalytics {
                                        
                       //  if(message.getFrom()[0].toString().contains("Internshala"))
                      //{
-                        //String date=message.getSentDate().toString();
-                         Date dt=new Date();
-                         dt=message.getSentDate();
+                        
+                        // Date dt=new Date();
+                         String dt=message.getSentDate().toString();
                          System.out.println("HELOO!!!! DATE: " + dt);
                         //print.println(message.getSentDate().toString());
                        
@@ -97,12 +98,12 @@ public class EmailAnalytics {
                         System.out.println("SUBJECT: " + sbj);
                         
                         
-       /* BasicDBObject document = new BasicDBObject();
+        BasicDBObject document = new BasicDBObject();
             document.put("subject", sbj);
             document.put("from",frm);
             document.put("date",dt);
             coll3.insert(document);
-         */   
+            
              //BasicDBObject newDocument = new BasicDBObject();
              //List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
              //obj.add(new BasicDBObject("subject",sbj));
@@ -114,9 +115,9 @@ public class EmailAnalytics {
 	      
                         
                         //print.println(message.getSubject());
-                        System.out.println("CONTENT: " + message.getContent().toString());
+                       // System.out.println("CONTENT: " + message.getContent().toString());
                         //print.println(message.getContent().toString());
-                        System.out.println(message.getContentType());
+                        //System.out.println(message.getContentType());
                         //print.println(message.getContentType());
 
                         //Object content = message.getContent();
@@ -143,10 +144,11 @@ public class EmailAnalytics {
                                // System.out.println(cursor.next());             
                                      //}
                         
-                        //INDEXING
+                        /*
                         coll3.ensureIndex(new BasicDBObject("from", 1),new BasicDBObject("date", 1));
                         coll3.ensureIndex(new BasicDBObject("sub", 1),new BasicDBObject("from", 1));
                         coll3.ensureIndex(new BasicDBObject("from", 1));
+                                */
                         System.out.println("*******");
                      //}
                     }    

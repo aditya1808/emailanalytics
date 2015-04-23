@@ -33,12 +33,14 @@ import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 /**
  *
  * @author kriti
  */
-public class test {
+public class dbmanage {
 public static void main(String args[]) throws UnknownHostException {
 
     
@@ -49,18 +51,31 @@ public static void main(String args[]) throws UnknownHostException {
          DB db = mongoClient.getDB( "temp" );
          System.out.println("Conn succesful");
          
-         DBCollection coll3 = db.getCollection("temp_col");
+         DBCollection coll3 = db.getCollection("temp_col_test");
          System.out.println("Collection created successfully ...");
         
-          /*BasicDBObject document = new BasicDBObject();
+         /* BasicDBObject document = new BasicDBObject();
             document.put("subject", "sub");
             document.put("from","frm");
             document.put("date","dt");
             coll3.insert(document);
          */
-         
+         String tst="apr";
+         //Change first letter to first case
+         String tst1 = Character.toUpperCase(tst.charAt(0)) + tst.substring(1);
+          Pattern namesRegex = Pattern.compile("^(.*)"+tst1+".*(2015)");
+        BasicDBObject query = new BasicDBObject("date", namesRegex);
+        DBCursor cursor = coll3.find(query); 
+            System.out.println("***** Output *****");
+            while (cursor.hasNext()) {
+                System.out.println(cursor.next());
+            }
         
-         DBCursor cursor = coll3.find();
+        /*
+         BasicDBObject abc=new BasicDBObject();
+         abc.put("from","Myntra");
+         
+         DBCursor cursor = coll3.find(abc);
         
          while (cursor.hasNext())
         { 
@@ -68,6 +83,8 @@ public static void main(String args[]) throws UnknownHostException {
         System.out.println(cursor.next()); 
            
         }
+          */  
+            
          /*coll3.ensureIndex(new BasicDBObject("from", 1),new BasicDBObject("date", 1));
          List <DBObject> list = coll3.getIndexInfo();
 
