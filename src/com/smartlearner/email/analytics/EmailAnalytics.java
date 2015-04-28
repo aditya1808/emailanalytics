@@ -5,36 +5,23 @@
  */
 package com.smartlearner.email.analytics;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ListIterator;
 import java.util.Properties;
-import javax.mail.Address;
-import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.search.FlagTerm;
-import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.DBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.Enumeration;
+import javax.mail.Header;
 /**
  *
  * @author krishnac
@@ -50,11 +37,11 @@ public class EmailAnalytics {
              
          
          
-             DB db=mongoClient.getDB("temp");
+             DB db=mongoClient.getDB("header");
          System.out.println("Conn succesful");
          
          //DBCollection coll3 = db.getCollection("temp_col"); has date stored in date format,not as string
-         DBCollection coll3 = db.getCollection("temp_col_test");
+         DBCollection coll3 = db.getCollection("head_coll");
          System.out.println("Collection created successfully");
 
             FileOutputStream out=new FileOutputStream("EmailText.txt");
@@ -70,11 +57,39 @@ public class EmailAnalytics {
             System.out.println(store);
             Folder inbox = store.getFolder("inbox");
             inbox.open(Folder.READ_ONLY);
-
+            
+            //HEADERS
+            
+            /*
+            Message[] messages = inbox.getMessages();
+      for (int i = 0; i < messages.length; i++) {
+        System.out.println((i + 1));
+        Enumeration headers = messages[i].getAllHeaders();
+        while (headers.hasMoreElements()) {
+          Header h = (Header) headers.nextElement();
+          
+           BasicDBObject document = new BasicDBObject();
+           if((!"Subject".equals(h.getName()))&&(!"From".equals(h.getName()))&&(!"Date".equals(h.getName()))&&(!"To".equals(h.getName()))&&(!"Delivered-To".equals(h.getName())))
+           {
+            System.out.println(h.getName() + ": " + h.getValue());   
+            document.put(h.getName(), h.getValue());
+           }
+            coll3.insert(document);
+          System.out.println("=========================================");
+        }}
+            
+            */
+            
+            
+            
+             //String[][] data = null;
+           
+            
             FlagTerm ft = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
             Message msg[] = inbox.search(ft);
             System.out.println("MAILS: " + msg.length);
             int countMail = 0;
+//            int i=0;
             for (Message message : msg) {
                 //if (countMail < 10) {
                     if (!message.getFrom()[0].toString().contains("google.com")) 
@@ -83,27 +98,75 @@ public class EmailAnalytics {
                                        
                       //  if(message.getFrom()[0].toString().contains("Internshala"))
                      //{
+                        BasicDBObject document = new BasicDBObject();
+                        
+         Enumeration headers = message.getAllHeaders();
+        while (headers.hasMoreElements()) {
+          Header h = (Header) headers.nextElement();
+          
+           
+           if((!"Subject".equals(h.getName()))&&(!"From".equals(h.getName()))&&(!"Date".equals(h.getName()))&&(!"To".equals(h.getName()))&&(!"Delivered-To".equals(h.getName())))
+           {
+            System.out.println(h.getName() + ": " + h.getValue());   
+            document.put(h.getName(), h.getValue());
+           }
+            
+          System.out.println("=========================================");
+        }               
+                        
                         
                         // Date dt=new Date();
                          String dt=message.getSentDate().toString();
-                         System.out.println("HELOO!!!! DATE: " + dt);
+                         //System.out.println("HELOO!!!! DATE: " + dt);
                         //print.println(message.getSentDate().toString());
                        
-                         System.out.println("Hello!!! FROM: " +message.getFrom()[0].toString());
+                         //System.out.println("Hello!!! FROM: " +message.getFrom()[0].toString());
                          String frm=message.getFrom()[0].toString();  
                         
+                        
+    //for (int i = 0; i < data.length; ++i) {}
+      //  for (int j = 0; j < data[i].length; ++j){;}
                        
                         //print.println(message.getFrom()[0].toString());
-                         String sbj=message.getSubject();
-                        System.out.println("SUBJECT: " + sbj);
+                        String sbj=message.getSubject();
+                        //System.out.println("SUBJECT: " + sbj);
                         
-                        
-        BasicDBObject document = new BasicDBObject();
             document.put("subject", sbj);
             document.put("from",frm);
             document.put("date",dt);
             coll3.insert(document);
             
+                        
+         //print.println(message.getSubject());
+        /*                System.out.println("CONTENT: " + message.getContent().toString());
+                        print.println(message.getContent().toString());
+                        System.out.println(message.getContentType());
+                        print.println(message.getContentType());
+*/
+                  /*      
+                        Object content = message.getContent();
+                        if(content instanceof String)
+                        {
+                            String str=(String) content;
+                            print.println(str);
+                        } else if(content instanceof Multipart)
+                        {
+                            Multipart mp=(Multipart) content;
+                            int count = mp.getCount();
+                            System.out.println("-----------");
+                            for (int x = 0; x < count; x++)
+                            {
+                                BodyPart bp = mp.getBodyPart(x);
+                                System.out.println(bp.getContent().toString());
+                             // print.println(bp.getContent().toString());
+                            }
+                        }
+                    */    
+                        
+                   
+       
+     
+     
              //BasicDBObject newDocument = new BasicDBObject();
              //List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
              //obj.add(new BasicDBObject("subject",sbj));
@@ -113,30 +176,6 @@ public class EmailAnalytics {
              //coll.insert(newDocument);
               
 	      
-                        
-                        //print.println(message.getSubject());
-                       // System.out.println("CONTENT: " + message.getContent().toString());
-                        //print.println(message.getContent().toString());
-                        //System.out.println(message.getContentType());
-                        //print.println(message.getContentType());
-
-                        //Object content = message.getContent();
-                        //if(content instanceof String)
-                        //{
-                        //    String str=(String) content;
-                         //   print.println(str);
-                        //} else if(content instanceof Multipart)
-                        //{
-                          //  Multipart mp=(Multipart) content;
-                            //int count = mp.getCount();
-                            //System.out.println("-----------");
-                            //for (int i = 0; i < count; i++)
-                            //{
-                             //   BodyPart bp = mp.getBodyPart(i);
-                                //System.out.println(bp.getContent().toString());
-                            //    print.println(bp.getContent().toString());
-                            //}
-                        //}
                         
                         //DBCursor cursor = coll2.find();
                             //while (cursor.hasNext())
@@ -153,6 +192,7 @@ public class EmailAnalytics {
                      //}
                     }    
                     
+
                     //System.out.println(countMail++);
                 //}
 

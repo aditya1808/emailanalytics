@@ -35,12 +35,26 @@ import com.mongodb.ServerAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 /**
  *
  * @author kriti
  */
 public class dbmanage {
+    
+    public static void prnt(Pattern nr,DBCollection col)
+    {
+    
+         BasicDBObject query = new BasicDBObject("date", nr);
+        
+        DBCursor cursor = col.find(query); 
+            System.out.println("***** Output *****");
+            while (cursor.hasNext()) {
+                System.out.println(cursor.next());
+            }
+    
+    }
 public static void main(String args[]) throws UnknownHostException {
 
     
@@ -48,10 +62,10 @@ public static void main(String args[]) throws UnknownHostException {
       Mongo mongoClient = new Mongo( "localhost" , 27017 );
              
          
-         DB db = mongoClient.getDB( "temp" );
+         DB db = mongoClient.getDB( "header" );
          System.out.println("Conn succesful");
          
-         DBCollection coll3 = db.getCollection("temp_col_test");
+         DBCollection coll3 = db.getCollection("head_coll");
          System.out.println("Collection created successfully ...");
         
          /* BasicDBObject document = new BasicDBObject();
@@ -60,16 +74,37 @@ public static void main(String args[]) throws UnknownHostException {
             document.put("date","dt");
             coll3.insert(document);
          */
-         String tst="apr";
-         //Change first letter to first case
-         String tst1 = Character.toUpperCase(tst.charAt(0)) + tst.substring(1);
-          Pattern namesRegex = Pattern.compile("^(.*)"+tst1+".*(2015)");
-        BasicDBObject query = new BasicDBObject("date", namesRegex);
-        DBCursor cursor = coll3.find(query); 
+         //Scanner in=new Scanner(System.in);
+         //String tst;
+         //System.out.println("Enter serach query:");
+         //tst=in.nextLine();
+         
+         Pattern namesRegex;
+        srchtest srch=new srchtest();
+        srch.assignsearch("19/jan/2015");
+        
+        if(srch.result=="m3")
+        {
+         
+         String tt=srch.month;
+         
+        // String tst = Character.toUpperCase(tt.charAt(0)) + tt.substring(1);
+        
+         String tst="Aditya";
+         //String tst1 = Character.toUpperCase(tst.charAt(0)) + tst.substring(1);
+          namesRegex = Pattern.compile("^(.*)job(.*)you(.*)" );
+          
+          prnt(namesRegex,coll3);
+        
+         BasicDBObject query = new BasicDBObject("subject", namesRegex);
+        
+        DBCursor cursor = coll3.find(); 
             System.out.println("***** Output *****");
             while (cursor.hasNext()) {
                 System.out.println(cursor.next());
             }
+        }
+       
         
         /*
          BasicDBObject abc=new BasicDBObject();
@@ -112,3 +147,4 @@ public static void main(String args[]) throws UnknownHostException {
    
     
 }
+

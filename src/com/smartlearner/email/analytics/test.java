@@ -49,7 +49,7 @@ public static void main(String args[]) throws UnknownHostException {
          DB db = mongoClient.getDB( "temp" );
          System.out.println("Conn succesful");
          
-         DBCollection coll3 = db.getCollection("temp_col");
+         DBCollection coll3 = db.getCollection("temp_col_test");
          System.out.println("Collection created successfully ...");
         
           /*BasicDBObject document = new BasicDBObject();
@@ -59,7 +59,12 @@ public static void main(String args[]) throws UnknownHostException {
             coll3.insert(document);
          */
          
-        
+         /*DBObject group = new BasicDBObject("$group" ,new BasicDBObject("_id" , "$from").append("count" , new BasicDBObject("$sum",1)));
+         AggregationOptions options=AggregationOptions.builder();
+         for(DBObject result:output.results()){System.out.println(result);}
+         DBCursor cursor = coll3.aggregate();
+        */
+         
          DBCursor cursor = coll3.find();
         
          while (cursor.hasNext())
@@ -68,6 +73,8 @@ public static void main(String args[]) throws UnknownHostException {
         System.out.println(cursor.next()); 
            
         }
+         
+         
          /*coll3.ensureIndex(new BasicDBObject("from", 1),new BasicDBObject("date", 1));
          List <DBObject> list = coll3.getIndexInfo();
 
